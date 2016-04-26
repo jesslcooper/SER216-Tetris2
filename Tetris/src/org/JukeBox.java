@@ -72,18 +72,22 @@ public class JukeBox {
 	}
 	
 	public static void stop(String s) {
-		if(clips.get(s) == null) return;
-		if(clips.get(s).isRunning()) clips.get(s).stop();
+		if(clips.get(s) == null)
+			return;
+		if(clips.get(s).isRunning())
+			clips.get(s).stop();
 	}
 	
 	public static void resume(String s) {
-		if(clips.get(s).isRunning()) return;
+		if(clips.get(s).isRunning()) 
+			return;
 		clips.get(s).start();
 	}
 	
 	public static void resumeLoop(String s) {
 		Clip c = clips.get(s);
-		if(c == null) return;
+		if(c == null) 
+			return;
 		c.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 	
@@ -101,8 +105,10 @@ public class JukeBox {
 	
 	public static void loop(String s, int frame, int start, int end) {
 		Clip c = clips.get(s);
-		if(c == null) return;
-		if(c.isRunning()) c.stop();
+		if(c == null) 
+			return;
+		if(c.isRunning()) 
+			c.stop();
 		c.setLoopPoints(start, end);
 		c.setFramePosition(frame);
 		c.loop(Clip.LOOP_CONTINUOUSLY);
@@ -122,14 +128,16 @@ public class JukeBox {
 	
 	public static void setVolume(String s, float f) {
 		Clip c = clips.get(s);
-		if(c == null) return;
+		if(c == null) 
+			return;
 		FloatControl vol = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
 		vol.setValue(f);
 	}
 	
 	public static boolean isPlaying(String s) {
 		Clip c = clips.get(s);
-		if(c == null) return false;
+		if(c == null) 
+			return false;
 		return c.isRunning();
 	}
 	
