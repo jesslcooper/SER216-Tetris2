@@ -164,6 +164,12 @@ public class Tetris extends JFrame {
 					}
 					break;
 					
+				case KeyEvent.VK_DOWN:
+					if(!isPaused && dropCooldown == 0) {
+						logicTimer.setCyclesPerSecond(25.0f);
+					}
+					break;
+					
 				/*
 				 * Move Left - When pressed, we check to see that the game is
 				 * not paused and that the position to the left of the current
@@ -175,12 +181,24 @@ public class Tetris extends JFrame {
 					}
 					break;
 					
+				case KeyEvent.VK_LEFT:
+					if(!isPaused && board.isValidAndEmpty(currentType, currentCol - 1, currentRow, currentRotation)) {
+						currentCol--;
+					}
+					break;
+					
 				/*
 				 * Move Right - When pressed, we check to see that the game is
 				 * not paused and that the position to the right of the current
 				 * position is valid. If so, we increment the current column by 1.
 				 */
 				case KeyEvent.VK_D:
+					if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
+						currentCol++;
+					}
+					break;
+					
+				case KeyEvent.VK_RIGHT:
 					if(!isPaused && board.isValidAndEmpty(currentType, currentCol + 1, currentRow, currentRotation)) {
 						currentCol++;
 					}
@@ -210,6 +228,11 @@ public class Tetris extends JFrame {
 					}
 					break;
 					
+				case KeyEvent.VK_SPACE:
+					if(!isPaused) {
+						rotatePiece((currentRotation == 3) ? 0 : currentRotation + 1);
+					}
+					break;
 				/*
 				 * Pause Game - When pressed, check to see that we're currently playing a game.
 				 * If so, toggle the pause variable and update the logic timer to reflect this
@@ -258,6 +281,11 @@ public class Tetris extends JFrame {
 				 * any cycles that might still be elapsed.
 				 */
 				case KeyEvent.VK_S:
+					logicTimer.setCyclesPerSecond(gameSpeed);
+					logicTimer.reset();
+					break;
+					
+				case KeyEvent.VK_DOWN:
 					logicTimer.setCyclesPerSecond(gameSpeed);
 					logicTimer.reset();
 					break;
@@ -371,7 +399,7 @@ public class Tetris extends JFrame {
 			 * in from the heavens immediately after this piece hits if we've not reacted
 			 * yet. (~0.5 second buffer).
 			 */
-			dropCooldown = 25;
+			dropCooldown = 7;  //Piece delay
 			
 			/*
 			 * Update the difficulty level. This has no effect on the game, and is only
@@ -424,6 +452,8 @@ public class Tetris extends JFrame {
 		this.currentCol = currentType.getSpawnColumn();
 		this.currentRow = currentType.getSpawnRow();
 		this.currentRotation = 0;
+		
+		if (currentType == nextType)  //added if statement to fix repeating tiles
 		this.nextType = TileType.values()[random.nextInt(TYPE_COUNT)];
 		
 		/*
@@ -580,4 +610,3 @@ public class Tetris extends JFrame {
 	}
 
 }
-
